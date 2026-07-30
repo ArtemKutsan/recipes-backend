@@ -121,8 +121,7 @@ import router from '#api/v1/router.js';
 │   │   ├── ...-create-posts.js
 │   │   ├── ...-create-comments.js
 │   │   ├── ...-create-cuisines.js
-│   │   ├── ...-create-recipes.js
-│   │   └── ...-rename-user-fields.js
+│   │   └── ...-create-recipes.js
 │   ├── models/                  # модели Sequelize
 │   │   ├── User.js
 │   │   ├── Post.js
@@ -241,14 +240,13 @@ JWT_EXPIRES_IN=7d
 
 `migration:generate` → создаёт новый файл миграции.
 
-В проекте шесть миграций:
+В проекте пять миграций:
 
 1. `users`
 2. `posts`
 3. `comments`
 4. `cuisines`
 5. `recipes`
-6. переименование пользовательских полей `name -> fullname` и `password -> password_hash`
 
 Все таблицы содержат `created_at` и `updated_at`.
 

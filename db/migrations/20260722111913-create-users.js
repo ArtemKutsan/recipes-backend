@@ -8,7 +8,7 @@ export async function up(queryInterface) {
       primaryKey: true,
       allowNull: false,
     },
-    name: {
+    fullname: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -17,7 +17,7 @@ export async function up(queryInterface) {
       allowNull: false,
       unique: true,
     },
-    password: {
+    password_hash: {
       type: DataTypes.STRING,
       allowNull: false,
     },
