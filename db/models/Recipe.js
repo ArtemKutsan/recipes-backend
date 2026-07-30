@@ -22,6 +22,10 @@ const Recipe = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    ingredients: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     instructions: {
       type: DataTypes.TEXT,
       allowNull: false,
