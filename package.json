@@ -1,0 +1,46 @@
+{
+  "name": "recipes-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "db:create": "node scripts/db.js create",
+    "db:drop": "node scripts/db.js drop",
+    "db:reset": "node scripts/db.js reset",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:migrate:undo": "sequelize-cli db:migrate:undo",
+    "db:migrate:undo:all": "sequelize-cli db:migrate:undo:all",
+    "db:seed": "sequelize-cli db:seed:all",
+    "db:seed:undo": "sequelize-cli db:seed:undo",
+    "db:seed:undo:all": "sequelize-cli db:seed:undo:all",
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "imports": {
+    "#api/*": "./api/*",
+    "#config/*": "./config/*",
+    "#middleware/*": "./middleware/*",
+    "#models/*": "./db/models/*",
+    "#routes/*": "./routes/*",
+    "#utils/*": "./utils/*"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.23.1",
+    "sequelize": "^6.37.8",
+    "sql-formatter": "^15.8.2"
+  },
+  "devDependencies": {
+    "eslint": "^10.7.0",
+    "sequelize-cli": "^6.6.5"
+  }
+}
