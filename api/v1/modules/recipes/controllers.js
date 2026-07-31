@@ -1,20 +1,27 @@
 import { ValidationError } from 'sequelize';
 import { Cuisine, Recipe, User } from '#models/index.js';
 import { parseListField } from '#utils/parseListField.js';
-import { toRecipeResponse } from './responses.js';
+import { toRecipeDetailResponse, toRecipeListResponse } from './responses.js';
 
-const recipeIncludes = [
-  { model: User, as: 'user', attributes: ['id', 'fullname', 'email'] },
-  { model: Cuisine, as: 'cuisine', attributes: ['id', 'title'] },
-];
+const recipeAuthorInclude = {
+  model: User,
+  as: 'user',
+  attributes: ['id', 'fullname', 'email'],
+};
+
+const recipeCuisineInclude = {
+  model: Cuisine,
+  as: 'cuisine',
+  attributes: ['id', 'title'],
+};
 
 export async function getAll(_req, res) {
   try {
     const recipes = await Recipe.findAll({
-      include: recipeIncludes,
+      include: [recipeAuthorInclude, recipeCuisineInclude],
     });
 
-    return res.json(recipes.map(toRecipeResponse));
+    return res.json(recipes.map(toRecipeListResponse));
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -23,14 +30,14 @@ export async function getAll(_req, res) {
 export async function getById(req, res) {
   try {
     const recipe = await Recipe.findByPk(req.params.id, {
-      include: recipeIncludes,
+      include: [recipeAuthorInclude, recipeCuisineInclude],
     });
 
     if (!recipe) {
       return res.status(404).json({ error: 'Рецепт не найден' });
     }
 
-    return res.json(toRecipeResponse(recipe));
+    return res.json(toRecipeDetailResponse(recipe));
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -63,10 +70,10 @@ export async function create(req, res) {
     });
 
     const createdRecipe = await Recipe.findByPk(recipe.id, {
-      include: recipeIncludes,
+      include: [recipeAuthorInclude, recipeCuisineInclude],
     });
 
-    return res.status(201).json(toRecipeResponse(createdRecipe));
+    return res.status(201).json(toRecipeDetailResponse(createdRecipe));
   } catch (error) {
     if (error instanceof ValidationError) {
       return res.status(400).json({ error: error.message });

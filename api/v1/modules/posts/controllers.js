@@ -1,10 +1,28 @@
 import { Comment, Post, User } from '#models/index.js';
 import { toPostResponse } from './responses.js';
 
+const postAuthorInclude = {
+  model: User,
+  as: 'user',
+  attributes: ['id', 'fullname', 'email'],
+};
+
+const commentAuthorInclude = {
+  model: User,
+  as: 'user',
+  attributes: ['id', 'fullname', 'email'],
+};
+
+const postCommentsInclude = {
+  model: Comment,
+  as: 'comments',
+  include: [commentAuthorInclude],
+};
+
 export async function getAll(_req, res) {
   try {
     const posts = await Post.findAll({
-      include: [{ model: User, as: 'user', attributes: ['id', 'fullname', 'email'] }],
+      include: [postAuthorInclude],
     });
 
     return res.json(posts.map(toPostResponse));
@@ -16,14 +34,7 @@ export async function getAll(_req, res) {
 export async function getById(req, res) {
   try {
     const post = await Post.findByPk(req.params.id, {
-      include: [
-        { model: User, as: 'user', attributes: ['id', 'fullname', 'email'] },
-        {
-          model: Comment,
-          as: 'comments',
-          include: [{ model: User, as: 'user', attributes: ['id', 'fullname', 'email'] }],
-        },
-      ],
+      include: [postAuthorInclude, postCommentsInclude],
     });
 
     if (!post) {
@@ -51,7 +62,11 @@ export async function create(req, res) {
       likes: 0,
     });
 
-    return res.status(201).json(post);
+    await post.reload({
+      include: [postAuthorInclude, postCommentsInclude],
+    });
+
+    return res.status(201).json(toPostResponse(post));
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -104,7 +119,7 @@ export async function like(req, res) {
     await post.save();
 
     await post.reload({
-      include: [{ model: User, as: 'user', attributes: ['id', 'fullname', 'email'] }],
+      include: [postAuthorInclude],
     });
 
     return res.json(post);

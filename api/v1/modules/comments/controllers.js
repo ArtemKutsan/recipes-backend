@@ -1,11 +1,17 @@
 import { Comment, Post, User } from '#models/index.js';
 import { toCommentResponse } from './responses.js';
 
+const commentAuthorInclude = {
+  model: User,
+  as: 'user',
+  attributes: ['id', 'fullname', 'email'],
+};
+
 export async function getByPostId(req, res) {
   try {
     const comments = await Comment.findAll({
       where: { postId: req.params.postId },
-      include: [{ model: User, as: 'user', attributes: ['id', 'fullname', 'email'] }],
+      include: [commentAuthorInclude],
     });
 
     return res.json(comments.map(toCommentResponse));
@@ -34,7 +40,11 @@ export async function create(req, res) {
       userId: user.id,
     });
 
-    return res.status(201).json(comment);
+    await comment.reload({
+      include: [commentAuthorInclude],
+    });
+
+    return res.status(201).json(toCommentResponse(comment));
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

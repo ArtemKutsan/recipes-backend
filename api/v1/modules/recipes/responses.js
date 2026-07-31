@@ -1,18 +1,29 @@
 import { parseListField } from '#utils/parseListField.js';
 
-export function toRecipeResponse(recipe) {
+function toRecipeBaseResponse(recipe) {
   const plainRecipe = recipe.toJSON();
 
   return {
     id: plainRecipe.id,
     title: plainRecipe.title,
-    ingredients: parseListField(plainRecipe.ingredients),
-    instructions: parseListField(plainRecipe.instructions),
-    // cuisineId: plainRecipe.cuisineId,
     cuisine: plainRecipe.cuisine?.title ?? null,
     author: plainRecipe.user?.fullname ?? null,
     userId: plainRecipe.userId,
     createdAt: plainRecipe.createdAt,
     updatedAt: plainRecipe.updatedAt,
+  };
+}
+
+export function toRecipeListResponse(recipe) {
+  return toRecipeBaseResponse(recipe);
+}
+
+export function toRecipeDetailResponse(recipe) {
+  const baseResponse = toRecipeBaseResponse(recipe);
+
+  return {
+    ...baseResponse,
+    ingredients: parseListField(recipe.ingredients),
+    instructions: parseListField(recipe.instructions),
   };
 }
