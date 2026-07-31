@@ -353,9 +353,41 @@ npm run db:seed:undo:all
 В ответах API response helper парсит эту строку обратно в массив.
 После создания рецепт повторно загружается с автором и кухней и возвращается через тот же response helper, что и GET-запросы.
 
-`ingredients` проходит через API, но отдельной колонки для него в миграции `recipes` пока нет.
+`ingredients` сохраняется в `recipes.ingredients` как текстовый список.
 
-Текущий API-слой уже работает с `ingredients`, но отдельная колонка для него в миграции `recipes` ещё не добавлена.
+## Схема таблиц
+
+Ниже две Mermaid-схемы: текущая реализованная БД и целевая схема, где будущие таблицы помечены отдельно.
+
+### Текущая схема всех реализованных таблиц проекта
+
+```mermaid
+erDiagram
+  USERS ||--o{ POSTS : "1:N author"
+  USERS ||--o{ COMMENTS : "1:N author"
+  USERS ||--o{ RECIPES : "1:N author"
+  POSTS ||--o{ COMMENTS : "1:N comments"
+  CUISINES |o--o{ RECIPES : "0..1:N cuisine_id"
+```
+
+### Целевая схема recipes-домена
+
+```mermaid
+erDiagram
+  USERS ||--o{ RECIPES : "1:N author"
+  USERS ||--o{ REVIEWS : "1:N author"
+  CUISINES |o--o{ RECIPES : "0..1:N cuisine_id"
+  RECIPES ||--o{ REVIEWS : "1:N reviews"
+  RECIPES ||--o{ RECIPE_TAGS : "N:M tags"
+  TAGS ||--o{ RECIPE_TAGS : "N:M tags"
+  RECIPES ||--o{ RECIPE_MEAL_TYPES : "N:M meal types"
+  MEAL_TYPES ||--o{ RECIPE_MEAL_TYPES : "N:M meal types"
+```
+
+Текущая схема показывает уже реализованные таблицы и связи в `recipes-backend/`.
+Она включает весь фактический backend, поэтому в ней есть и `posts`, и `comments`.
+Целевая схема recipes-домена показывает только будущие таблицы `recipes`, `reviews`, `cuisines`, `tags`, `meal_types`, `recipe_tags` и `recipe_meal_types`.
+Она описана в [`recipes-domain-schema.md`](./recipes-domain-schema.md) и не относится к общему backend целиком.
 
 ## Версии API
 
@@ -652,6 +684,13 @@ const comments = await Comment.findAll({
 
 Так можно получить все комментарии к конкретному посту.
 
+## Форматы API-ответов
+
+- `POST /resource` возвращает полное представление созданного ресурса.
+- `GET /resource/:id` возвращает такое же полное представление ресурса.
+- `GET /resource` возвращает сокращённое представление для списка без тяжёлых вложенных данных.
+- Для comments формат элемента одинаковый в списке и после создания; для posts и recipes detail-ответ включает связанные данные, которые не нужны в общем списке.
+
 ## Роутеры
 
 Маршруты разделены по сущностям.
@@ -714,6 +753,8 @@ User.findByPk(req.user.id);
 
 Если пользователя нет → 404.
 
+Успешный ответ использует тот же полный формат поста, что и `GET /api/v1/posts/:id`.
+
 ### PUT /api/v1/posts/:id
 
 Обновить `title` и `text`.
@@ -765,6 +806,8 @@ User.findByPk(req.user.id);
 Если пользователя нет → 404.
 
 Нужен заголовок `Authorization: Bearer <token>`.
+
+Успешный ответ использует тот же формат комментария, что и список комментариев к посту.
 
 ### DELETE /api/v1/comments/:id
 
