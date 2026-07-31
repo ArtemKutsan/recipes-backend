@@ -27,14 +27,14 @@ tags: [recipes, database, schema]
 
 ```mermaid
 erDiagram
-  USERS ||--o{ RECIPES : "1:N author"
-  USERS ||--o{ REVIEWS : "1:N author"
-  CUISINES |o--o{ RECIPES : "0..1:N cuisine_id"
-  RECIPES ||--o{ REVIEWS : "1:N reviews"
-  RECIPES ||--o{ RECIPE_TAGS : "N:M tags"
-  TAGS ||--o{ RECIPE_TAGS : "N:M tags"
-  RECIPES ||--o{ RECIPE_MEAL_TYPES : "N:M meal types"
-  MEAL_TYPES ||--o{ RECIPE_MEAL_TYPES : "N:M meal types"
+  USERS ||--o{ RECIPES : "creates"
+  USERS ||--o{ REVIEWS : "writes"
+  CUISINES |o--o{ RECIPES : "contains"
+  RECIPES ||--o{ REVIEWS : "has"
+  RECIPES ||--o{ RECIPE_TAGS : "has tags"
+  TAGS ||--o{ RECIPE_TAGS : "has recipes"
+  RECIPES ||--o{ RECIPE_MEAL_TYPES : "has meal types"
+  MEAL_TYPES ||--o{ RECIPE_MEAL_TYPES : "has recipes"
 ```
 
 ## Таблицы

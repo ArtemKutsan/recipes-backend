@@ -363,25 +363,25 @@ npm run db:seed:undo:all
 
 ```mermaid
 erDiagram
-  USERS ||--o{ POSTS : "1:N author"
-  USERS ||--o{ COMMENTS : "1:N author"
-  USERS ||--o{ RECIPES : "1:N author"
-  POSTS ||--o{ COMMENTS : "1:N comments"
-  CUISINES |o--o{ RECIPES : "0..1:N cuisine_id"
+  USERS ||--o{ POSTS : "creates"
+  USERS ||--o{ COMMENTS : "writes"
+  USERS ||--o{ RECIPES : "creates"
+  POSTS ||--o{ COMMENTS : "has"
+  CUISINES |o--o{ RECIPES : "contains"
 ```
 
 ### Целевая схема recipes-домена
 
 ```mermaid
 erDiagram
-  USERS ||--o{ RECIPES : "1:N author"
-  USERS ||--o{ REVIEWS : "1:N author"
-  CUISINES |o--o{ RECIPES : "0..1:N cuisine_id"
-  RECIPES ||--o{ REVIEWS : "1:N reviews"
-  RECIPES ||--o{ RECIPE_TAGS : "N:M tags"
-  TAGS ||--o{ RECIPE_TAGS : "N:M tags"
-  RECIPES ||--o{ RECIPE_MEAL_TYPES : "N:M meal types"
-  MEAL_TYPES ||--o{ RECIPE_MEAL_TYPES : "N:M meal types"
+  USERS ||--o{ RECIPES : "creates"
+  USERS ||--o{ REVIEWS : "writes"
+  CUISINES |o--o{ RECIPES : "contains"
+  RECIPES ||--o{ REVIEWS : "has"
+  RECIPES ||--o{ RECIPE_TAGS : "has tags"
+  TAGS ||--o{ RECIPE_TAGS : "has recipes"
+  RECIPES ||--o{ RECIPE_MEAL_TYPES : "has meal types"
+  MEAL_TYPES ||--o{ RECIPE_MEAL_TYPES : "has recipes"
 ```
 
 Текущая схема показывает уже реализованные таблицы и связи в `recipes-backend/`.
