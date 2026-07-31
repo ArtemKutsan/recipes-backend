@@ -9,3 +9,13 @@ export function validateCreateComment(req, res, next) {
 
   return next();
 }
+
+export function validateUpdateComment(req, res, next) {
+  const isValid = hasRequiredStringFields(req.body, ['text']);
+
+  if (!isValid) {
+    return res.status(400).json({ error: 'Поле text обязательно' });
+  }
+
+  return next();
+}

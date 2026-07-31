@@ -50,15 +50,44 @@ export async function create(req, res) {
   }
 }
 
-export async function remove(req, res) {
+export async function update(req, res) {
   try {
-    const deletedCount = await Comment.destroy({
-      where: { id: req.params.id },
-    });
+    const comment = await Comment.findByPk(req.params.id);
 
-    if (!deletedCount) {
+    if (!comment) {
       return res.status(404).json({ error: 'Комментарий не найден' });
     }
+
+    if (comment.userId !== req.user.id) {
+      return res.status(403).json({ error: 'Нет прав на изменение этого комментария' });
+    }
+
+    comment.text = req.body.text;
+    await comment.save();
+
+    await comment.reload({
+      include: [commentAuthorInclude],
+    });
+
+    return res.json(toCommentResponse(comment));
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
+
+export async function remove(req, res) {
+  try {
+    const comment = await Comment.findByPk(req.params.id);
+
+    if (!comment) {
+      return res.status(404).json({ error: 'Комментарий не найден' });
+    }
+
+    if (comment.userId !== req.user.id) {
+      return res.status(403).json({ error: 'Нет прав на удаление этого комментария' });
+    }
+
+    await comment.destroy();
 
     return res.sendStatus(204);
   } catch (error) {

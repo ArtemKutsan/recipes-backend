@@ -80,6 +80,10 @@ export async function update(req, res) {
       return res.status(404).json({ error: 'Пост не найден' });
     }
 
+    if (post.userId !== req.user.id) {
+      return res.status(403).json({ error: 'Нет прав на изменение этого поста' });
+    }
+
     post.title = req.body.title;
     post.text = req.body.text;
 
@@ -93,13 +97,17 @@ export async function update(req, res) {
 
 export async function remove(req, res) {
   try {
-    const deletedCount = await Post.destroy({
-      where: { id: req.params.id },
-    });
+    const post = await Post.findByPk(req.params.id);
 
-    if (!deletedCount) {
+    if (!post) {
       return res.status(404).json({ error: 'Пост не найден' });
     }
+
+    if (post.userId !== req.user.id) {
+      return res.status(403).json({ error: 'Нет прав на удаление этого поста' });
+    }
+
+    await post.destroy();
 
     return res.sendStatus(204);
   } catch (error) {
