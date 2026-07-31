@@ -11,6 +11,7 @@ API подключён с версией в URL, а импорты внутри 
 - Sequelize 6
 - MySQL через `mysql2`
 - Sequelize CLI для миграций и сидеров
+- `nodemon` для режима разработки
 - `dotenv` для переменных окружения
 - `bcrypt` для хеширования паролей (rounds = 10)
 - `jsonwebtoken` для JWT авторизации
