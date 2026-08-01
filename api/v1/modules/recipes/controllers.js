@@ -1,5 +1,5 @@
 import { ValidationError } from 'sequelize';
-import { Cuisine, Recipe, User } from '#models/index.js';
+import { Cuisine, Recipe, Tag, User } from '#models/index.js';
 import { parseListField } from '#utils/parseListField.js';
 import { toRecipeDetailResponse, toRecipeListResponse } from './responses.js';
 
@@ -15,10 +15,16 @@ const recipeCuisineInclude = {
   attributes: ['id', 'title'],
 };
 
+const recipeTagsInclude = {
+  model: Tag,
+  as: 'tags',
+  attributes: ['id', 'title', 'slug'],
+};
+
 export async function getAll(_req, res) {
   try {
     const recipes = await Recipe.findAll({
-      include: [recipeAuthorInclude, recipeCuisineInclude],
+      include: [recipeAuthorInclude, recipeCuisineInclude, recipeTagsInclude],
     });
 
     return res.json(recipes.map(toRecipeListResponse));
@@ -30,7 +36,7 @@ export async function getAll(_req, res) {
 export async function getById(req, res) {
   try {
     const recipe = await Recipe.findByPk(req.params.id, {
-      include: [recipeAuthorInclude, recipeCuisineInclude],
+      include: [recipeAuthorInclude, recipeCuisineInclude, recipeTagsInclude],
     });
 
     if (!recipe) {
@@ -70,7 +76,7 @@ export async function create(req, res) {
     });
 
     const createdRecipe = await Recipe.findByPk(recipe.id, {
-      include: [recipeAuthorInclude, recipeCuisineInclude],
+      include: [recipeAuthorInclude, recipeCuisineInclude, recipeTagsInclude],
     });
 
     return res.status(201).json(toRecipeDetailResponse(createdRecipe));
