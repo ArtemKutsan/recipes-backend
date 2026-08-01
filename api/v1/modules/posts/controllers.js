@@ -89,7 +89,11 @@ export async function update(req, res) {
 
     await post.save();
 
-    return res.json(post);
+    await post.reload({
+      include: [postAuthorInclude],
+    });
+
+    return res.json(toPostResponse(post));
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -130,7 +134,7 @@ export async function like(req, res) {
       include: [postAuthorInclude],
     });
 
-    return res.json(post);
+    return res.json(toPostResponse(post));
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
