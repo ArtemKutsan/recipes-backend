@@ -404,7 +404,7 @@ API подключён с версией в URL:
 - `GET /api/v1/posts`
 - `GET /api/v1/posts/:id`
 - `POST /api/v1/posts`
-- `PUT /api/v1/posts/:id`
+- `PATCH /api/v1/posts/:id`
 - `DELETE /api/v1/posts/:id`
 - `POST /api/v1/posts/:id/like`
 - `GET /api/v1/comments/:postId`
@@ -469,7 +469,7 @@ const post = await Post.findByPk(req.params.id);
 Используем в:
 
 - `GET /posts/:id`
-- `PUT /posts/:id`
+- `PATCH /posts/:id`
 - `POST /posts/:id/like`
 - `POST /comments` для проверки существования поста
 
@@ -536,7 +536,7 @@ await post.update({
 
 Используем в:
 
-- `PUT /posts/:id`
+- `PATCH /posts/:id`
 
 ### `destroy`
 
@@ -755,7 +755,7 @@ User.findByPk(req.user.id);
 
 Успешный ответ использует формат поста с автором; комментарии повторно не загружаются.
 
-### PUT /api/v1/posts/:id
+### PATCH /api/v1/posts/:id
 
 Обновить `title` и `text`.
 
@@ -860,7 +860,7 @@ Authorization: Bearer <token>
 Защищены:
 
 - `POST /api/v1/posts`
-- `PUT /api/v1/posts/:id`
+- `PATCH /api/v1/posts/:id`
 - `DELETE /api/v1/posts/:id`
 - `POST /api/v1/posts/:id/like`
 - `POST /api/v1/comments`

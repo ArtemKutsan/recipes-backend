@@ -11,8 +11,8 @@ router.get('/', getAll);
 router.get('/:id', getById);
 // POST /api/v1/posts - создание поста под авторизованным пользователем.
 router.post('/', auth, validateCreatePost, create);
-// PUT /api/v1/posts/:id - обновление поста.
-router.put('/:id', auth, update);
+// PATCH /api/v1/posts/:id - частичное обновление поста.
+router.patch('/:id', auth, update);
 // DELETE /api/v1/posts/:id - удаление поста.
 router.delete('/:id', auth, remove);
 // POST /api/v1/posts/:id/like - увеличение счётчика лайков.
