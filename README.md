@@ -123,7 +123,8 @@ import router from '#api/v1/router.js';
 │   │   ├── ...-create-comments.js
 │   │   ├── ...-create-cuisines.js
 │   │   ├── ...-create-recipes.js
-│   │   └── ...-create-tags.js
+│   │   ├── ...-create-tags.js
+│   │   └── ...-create-recipe-tags.js
 │   ├── models/                  # модели Sequelize
 │   │   ├── User.js
 │   │   ├── Post.js
@@ -359,7 +360,7 @@ npm run db:seed:undo:all
 
 ## Схема таблиц
 
-Ниже две Mermaid-схемы: текущая реализованная БД и целевая схема, где будущие таблицы помечены отдельно.
+Ниже две Mermaid-схемы: текущая реализованная БД и полная целевая схема recipes-домена. В целевой схеме уже реализованные сущности показаны вместе с запланированными.
 
 ### Текущая схема всех реализованных таблиц проекта
 
@@ -370,11 +371,8 @@ erDiagram
   USERS ||--o{ RECIPES : "creates"
   POSTS ||--o{ COMMENTS : "has"
   CUISINES |o--o{ RECIPES : "contains"
-  TAGS {
-    INT id PK
-    STRING title
-    STRING slug
-  }
+  RECIPES ||--o{ RECIPE_TAGS : "has tags"
+  TAGS ||--o{ RECIPE_TAGS : "has recipes"
 ```
 
 ### Целевая схема recipes-домена
@@ -393,7 +391,7 @@ erDiagram
 
 Текущая схема показывает уже реализованные таблицы и связи в `recipes-backend/`.
 Она включает весь фактический backend, поэтому в ней есть и `posts`, и `comments`.
-Целевая схема recipes-домена показывает только будущие таблицы `recipes`, `reviews`, `cuisines`, `tags`, `meal_types`, `recipe_tags` и `recipe_meal_types`.
+Целевая схема recipes-домена включает уже реализованные `recipes`, `cuisines`, `tags` и `recipe_tags`, а также запланированные `reviews`, `meal_types` и `recipe_meal_types`.
 Она описана в [`recipes-domain-schema.md`](./recipes-domain-schema.md) и не относится к общему backend целиком.
 
 ## Версии API

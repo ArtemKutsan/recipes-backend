@@ -22,7 +22,17 @@ Cuisine.hasMany(Recipe, { foreignKey: 'cuisineId', as: 'recipes' });
 Recipe.belongsTo(Cuisine, { foreignKey: 'cuisineId', as: 'cuisine' });
 
 // Many-to-Many
-// Post.belongsToMany(Tag, { through: 'posts_tags', as: 'tags', foreignKey: 'postId', otherKey: 'tagId' });
-// Tag.belongsToMany(Post, { through: 'posts_tags', as: 'posts', foreignKey: 'tagId', otherKey: 'postId' });
+Recipe.belongsToMany(Tag, {
+  through: 'recipe_tags',
+  foreignKey: 'recipeId',
+  otherKey: 'tagId',
+  as: 'tags',
+});
+Tag.belongsToMany(Recipe, {
+  through: 'recipe_tags',
+  foreignKey: 'tagId',
+  otherKey: 'recipeId',
+  as: 'recipes',
+});
 
 export { User, Post, Comment, Recipe, Cuisine, Tag };

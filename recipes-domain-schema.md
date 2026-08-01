@@ -96,7 +96,7 @@ erDiagram
 
 ### `tags`
 
-Таблица добавлена в текущем backend; связи с recipes появятся на следующем шаге через `recipe_tags`.
+Таблица и Sequelize-связь с recipes через `recipe_tags` добавлены в текущем backend; API-запись тегов в recipes ещё не подключена.
 
 - `id` INT UNSIGNED, PK, AUTO_INCREMENT
 - `title` VARCHAR(100), NOT NULL, UNIQUE
@@ -112,6 +112,8 @@ erDiagram
 - `updated_at` DATETIME, NOT NULL
 
 ### `recipe_tags`
+
+Таблица и Sequelize-связи добавлены в текущем backend; API-запись тегов в recipes ещё не подключена.
 
 - `recipe_id` BIGINT UNSIGNED, PK, FK, `recipes.id`, `CASCADE`
 - `tag_id` INT UNSIGNED, PK, FK, INDEX, `tags.id`, `CASCADE`
