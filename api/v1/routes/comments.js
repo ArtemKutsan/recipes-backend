@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { auth } from '#api/v1/middleware/auth.js';
 import { create, getByPostId, remove, update } from '#api/v1/modules/comments/controllers.js';
 import { validateCreateComment, validateUpdateComment } from '#api/v1/modules/comments/validators.js';
-import { validateId } from '#utils/validation.js';
+import { validateId } from '#utils/validators.js';
 
 const router = Router();
 

@@ -436,7 +436,7 @@ API подключён с версией в URL:
 - `api/v1/modules/users/controllers.js`
 - `api/v1/modules/users/responses.js`
 - `api/v1/modules/users/validators.js`
-- `utils/validation.js`
+- `utils/validators.js`
 
 Версия `v2` тоже подключена отдельно:
 

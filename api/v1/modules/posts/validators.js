@@ -3,7 +3,7 @@ import {
   hasInvalidStringFields,
   hasOnlyAllowedFields,
   hasRequiredStringFields,
-} from '#utils/validation.js';
+} from '#utils/validators.js';
 
 export function validateCreatePost(req, res, next) {
   const isValid = hasRequiredStringFields(req.body, ['title', 'text']);

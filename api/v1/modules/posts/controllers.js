@@ -1,5 +1,5 @@
 import { Comment, Post, User } from '#models/index.js';
-import { hasField } from '#utils/validation.js';
+import { hasField } from '#utils/validators.js';
 import { toPostResponse } from './responses.js';
 
 const postAuthorInclude = {

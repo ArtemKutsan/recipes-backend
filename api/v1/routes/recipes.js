@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { auth } from '#api/v1/middleware/auth.js';
 import { create, getAll, getById } from '#api/v1/modules/recipes/controllers.js';
 import { validateCreateRecipe } from '#api/v1/modules/recipes/validators.js';
-import { validateId } from '#utils/validation.js';
+import { validateId } from '#utils/validators.js';
 
 const router = Router();
 

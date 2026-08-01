@@ -1,4 +1,4 @@
-import { hasRequiredStringFields } from '#utils/validation.js';
+import { hasRequiredStringFields } from '#utils/validators.js';
 
 export function validateCreateRecipe(req, res, next) {
   const isValid = hasRequiredStringFields(req.body, ['title', 'ingredients', 'instructions']);

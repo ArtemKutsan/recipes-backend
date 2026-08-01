@@ -5,7 +5,7 @@ import {
   validateCreatePost,
   validateUpdatePost,
 } from '#api/v1/modules/posts/validators.js';
-import { validateId } from '#utils/validation.js';
+import { validateId } from '#utils/validators.js';
 
 const router = Router();
 
