@@ -138,7 +138,9 @@ import router from '#api/v1/router.js';
 │       ├── ...-seed-posts.js
 │       ├── ...-seed-comments.js
 │       ├── ...-seed-cuisines.js
-│       └── ...-seed-recipes.js
+│       ├── ...-seed-recipes.js
+│       ├── ...-seed-tags.js
+│       └── ...-seed-recipe-tags.js
 ├── api/                         # HTTP-слой приложения
 │   ├── v1/                      # основная версия API
 │   │   ├── middleware/          # middleware для v1
