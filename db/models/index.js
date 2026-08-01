@@ -3,6 +3,7 @@ import Post from './Post.js';
 import Comment from './Comment.js';
 import Recipe from './Recipe.js';
 import Cuisine from './Cuisine.js';
+import Tag from './Tag.js';
 
 // One-to-One
 // User.hasOne(Profile, { foreignKey: 'userId', as: 'profile' });
@@ -24,4 +25,4 @@ Recipe.belongsTo(Cuisine, { foreignKey: 'cuisineId', as: 'cuisine' });
 // Post.belongsToMany(Tag, { through: 'posts_tags', as: 'tags', foreignKey: 'postId', otherKey: 'tagId' });
 // Tag.belongsToMany(Post, { through: 'posts_tags', as: 'posts', foreignKey: 'tagId', otherKey: 'postId' });
 
-export { User, Post, Comment, Recipe, Cuisine };
+export { User, Post, Comment, Recipe, Cuisine, Tag };

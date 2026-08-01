@@ -122,13 +122,15 @@ import router from '#api/v1/router.js';
 │   │   ├── ...-create-posts.js
 │   │   ├── ...-create-comments.js
 │   │   ├── ...-create-cuisines.js
-│   │   └── ...-create-recipes.js
+│   │   ├── ...-create-recipes.js
+│   │   └── ...-create-tags.js
 │   ├── models/                  # модели Sequelize
 │   │   ├── User.js
 │   │   ├── Post.js
 │   │   ├── Comment.js
 │   │   ├── Recipe.js
 │   │   ├── Cuisine.js
+│   │   ├── Tag.js
 │   │   └── index.js
 │   └── seeders/                 # сиды для тестовых данных
 │       ├── ...-seed-users.js
@@ -368,6 +370,11 @@ erDiagram
   USERS ||--o{ RECIPES : "creates"
   POSTS ||--o{ COMMENTS : "has"
   CUISINES |o--o{ RECIPES : "contains"
+  TAGS {
+    INT id PK
+    STRING title
+    STRING slug
+  }
 ```
 
 ### Целевая схема recipes-домена

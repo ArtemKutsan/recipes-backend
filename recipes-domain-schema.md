@@ -96,6 +96,8 @@ erDiagram
 
 ### `tags`
 
+Таблица добавлена в текущем backend; связи с recipes появятся на следующем шаге через `recipe_tags`.
+
 - `id` INT UNSIGNED, PK, AUTO_INCREMENT
 - `title` VARCHAR(100), NOT NULL, UNIQUE
 - `slug` VARCHAR(120), NOT NULL, UNIQUE
