@@ -1,4 +1,5 @@
 import { Comment, Post, User } from '#models/index.js';
+import { hasField } from '#utils/validation.js';
 import { toPostResponse } from './responses.js';
 
 const postAuthorInclude = {
@@ -84,8 +85,13 @@ export async function update(req, res) {
       return res.status(403).json({ error: 'Нет прав на изменение этого поста' });
     }
 
-    post.title = req.body.title;
-    post.text = req.body.text;
+    if (hasField(req.body, 'title')) {
+      post.title = req.body.title;
+    }
+
+    if (hasField(req.body, 'text')) {
+      post.text = req.body.text;
+    }
 
     await post.save();
 
