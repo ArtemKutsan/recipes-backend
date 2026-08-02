@@ -40,6 +40,14 @@ export function isPositiveInteger(value) {
   return typeof value === 'string' && /^[1-9]\d*$/.test(value);
 }
 
+export function isUniqueNonEmptyStringArray(value) {
+  // Сначала убеждаемся, что все элементы — непустые строки.
+  return Array.isArray(value)
+    && value.every(isNonEmptyString)
+    // Затем сравниваем нормализованные регистронезависимые ключи через Set.
+    && new Set(value.map((item) => item.trim().toLocaleLowerCase())).size === value.length;
+}
+
 export function validateId(req, res, next) {
   if (!isPositiveInteger(req.params.id)) {
     return res.status(400).json({ error: 'Некорректный id' });

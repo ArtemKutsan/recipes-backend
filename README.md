@@ -353,10 +353,10 @@ npm run db:seed:undo:all
 
 Для рецепта используется поле `title`.
 
-В текущем флоу `POST /api/v1/recipes` принимает `title`, `ingredients` и `instructions`.
+В текущем флоу `POST /api/v1/recipes` принимает `title`, `ingredients`, `instructions`, опциональный `cuisineId` и массив строк `tags`.
 `instructions` нормализуется в строку с разделителем `. ` и хранится как `TEXT`.
 В ответах API response helper парсит эту строку обратно в массив.
-После создания рецепт повторно загружается с автором и кухней и возвращается через тот же response helper, что и GET-запросы.
+После создания рецепт повторно загружается с автором, кухней и tags и возвращается через тот же response helper, что и GET-запросы.
 
 `ingredients` сохраняется в `recipes.ingredients` как текстовый список.
 
