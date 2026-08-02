@@ -7,11 +7,13 @@ export async function up(queryInterface) {
     { id: 3, title: 'Salad', slug: 'salad', created_at: now, updated_at: now },
     { id: 4, title: 'Breakfast', slug: 'breakfast', created_at: now, updated_at: now },
     { id: 5, title: 'Soup', slug: 'soup', created_at: now, updated_at: now },
+    { id: 6, title: 'Quick', slug: 'quick', created_at: now, updated_at: now },
+    { id: 7, title: 'Vegetarian', slug: 'vegetarian', created_at: now, updated_at: now },
   ]);
 }
 
 export async function down(queryInterface) {
   await queryInterface.bulkDelete('tags', {
-    id: [1, 2, 3, 4, 5],
+    id: [1, 2, 3, 4, 5, 6, 7],
   });
 }

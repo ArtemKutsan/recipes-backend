@@ -24,12 +24,14 @@ Recipe.belongsTo(Cuisine, { foreignKey: 'cuisineId', as: 'cuisine' });
 // Many-to-Many
 Recipe.belongsToMany(Tag, {
   through: 'recipe_tags',
+  timestamps: false,
   foreignKey: 'recipeId',
   otherKey: 'tagId',
   as: 'tags',
 });
 Tag.belongsToMany(Recipe, {
   through: 'recipe_tags',
+  timestamps: false,
   foreignKey: 'tagId',
   otherKey: 'recipeId',
   as: 'recipes',
