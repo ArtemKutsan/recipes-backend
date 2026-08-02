@@ -357,6 +357,7 @@ npm run db:seed:undo:all
 `instructions` нормализуется в строку с разделителем `. ` и хранится как `TEXT`.
 В ответах API response helper парсит эту строку обратно в массив.
 После создания рецепт повторно загружается с автором, кухней и tags и возвращается через тот же response helper, что и GET-запросы.
+`PATCH /api/v1/recipes/:id` частично обновляет рецепт только для его автора; переданный массив `tags` полностью заменяет связи, а `[]` очищает их.
 
 `ingredients` сохраняется в `recipes.ingredients` как текстовый список.
 
@@ -421,6 +422,7 @@ API подключён с версией в URL:
 - `GET /api/v1/recipes`
 - `GET /api/v1/recipes/:id`
 - `POST /api/v1/recipes`
+- `PATCH /api/v1/recipes/:id`
 
 Для `v2` пока есть отдельный каркас:
 

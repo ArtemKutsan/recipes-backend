@@ -2,6 +2,7 @@ import { ValidationError } from 'sequelize';
 import sequelize from '#config/db.js';
 import { Cuisine, Recipe, Tag, User } from '#models/index.js';
 import { findOrCreateTags } from '../tags/service.js';
+import { hasField } from '#utils/validators.js';
 import { parseListField } from '#utils/parseListField.js';
 import { toRecipeDetailResponse, toRecipeListResponse } from './responses.js';
 
@@ -78,13 +79,16 @@ export async function create(req, res) {
       const tags = await findOrCreateTags(req.body.tags ?? [], { transaction });
 
       // Сначала создаём сам рецепт, чтобы получить его первичный ключ.
-      const recipe = await Recipe.create({
-        title: req.body.title,
-        ingredients: parseListField(req.body.ingredients).join('. '),
-        instructions: parseListField(req.body.instructions).join('. '),
-        cuisineId,
-        userId: user.id,
-      }, { transaction });
+      const recipe = await Recipe.create(
+        {
+          title: req.body.title,
+          ingredients: parseListField(req.body.ingredients).join('. '),
+          instructions: parseListField(req.body.instructions).join('. '),
+          cuisineId,
+          userId: user.id,
+        },
+        { transaction },
+      );
 
       if (tags.length) {
         // После появления recipe.id записываем N:M связи в recipe_tags.
@@ -99,6 +103,71 @@ export async function create(req, res) {
 
       // Наружу передаём только HTTP-код и уже подготовленные JSON-данные.
       return { statusCode: 201, data: toRecipeDetailResponse(createdRecipe) };
+    });
+
+    return res.status(result.statusCode).json(result.data);
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    return res.status(500).json({ error: error.message });
+  }
+}
+
+export async function update(req, res) {
+  try {
+    // Обновление рецепта и его N:M-связей выполняется атомарно.
+    const result = await sequelize.transaction(async (transaction) => {
+      // Загружаем рецепт внутри транзакции до проверки владельца.
+      const recipe = await Recipe.findByPk(req.params.id, { transaction });
+
+      if (!recipe) {
+        return { statusCode: 404, data: { error: 'Рецепт не найден' } };
+      }
+
+      if (recipe.userId !== req.user.id) {
+        // Изменять рецепт может только пользователь, который его создал.
+        return { statusCode: 403, data: { error: 'Нет прав на изменение этого рецепта' } };
+      }
+
+      // Обновляем только поля, явно переданные в PATCH-запросе.
+      if (hasField(req.body, 'title')) recipe.title = req.body.title;
+      if (hasField(req.body, 'ingredients')) {
+        recipe.ingredients = parseListField(req.body.ingredients).join('. ');
+      }
+      if (hasField(req.body, 'instructions')) {
+        recipe.instructions = parseListField(req.body.instructions).join('. ');
+      }
+
+      if (hasField(req.body, 'cuisineId')) {
+        // null снимает кухню, а числовой id проверяется по справочнику cuisines.
+        const cuisineId = req.body.cuisineId === null ? null : Number(req.body.cuisineId);
+        const cuisine =
+          cuisineId === null ? null : await Cuisine.findByPk(cuisineId, { transaction });
+
+        if (cuisineId !== null && !cuisine) {
+          return { statusCode: 400, data: { error: 'Кухня не найдена' } };
+        }
+
+        recipe.cuisineId = cuisineId;
+      }
+
+      if (hasField(req.body, 'tags')) {
+        // setTags полностью заменяет набор связей; [] удаляет все tags рецепта.
+        const tags = await findOrCreateTags(req.body.tags, { transaction });
+        await recipe.setTags(tags, { transaction });
+      }
+
+      // Сохраняем обычные поля рецепта после всех проверок.
+      await recipe.save({ transaction });
+      // Перечитываем связанные данные для единого detail-response.
+      await recipe.reload({
+        include: [recipeAuthorInclude, recipeCuisineInclude, recipeTagsInclude],
+        transaction,
+      });
+
+      return { statusCode: 200, data: toRecipeDetailResponse(recipe) };
     });
 
     return res.status(result.statusCode).json(result.data);
