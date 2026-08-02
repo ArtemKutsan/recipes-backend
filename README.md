@@ -158,6 +158,10 @@ import router from '#api/v1/router.js';
 │   │   │   │   ├── controllers.js
 │   │   │   │   ├── responses.js
 │   │   │   │   └── validators.js
+│   │   │   ├── tags/
+│   │   │   │   ├── controllers.js
+│   │   │   │   ├── responses.js
+│   │   │   │   └── service.js
 │   │   │   └── users/
 │   │   │       ├── controllers.js
 │   │   │       ├── responses.js
@@ -166,6 +170,7 @@ import router from '#api/v1/router.js';
 │   │   │   ├── comments.js
 │   │   │   ├── posts.js
 │   │   │   ├── recipes.js
+│   │   │   ├── tags.js
 │   │   │   └── users.js
 │   │   └── router.js
 │   ├── v2/                      # вторая версия API
@@ -179,7 +184,8 @@ import router from '#api/v1/router.js';
 │   └── db.js
 ├── utils/                       # общие утилиты приложения
 │   ├── parseListField.js
-│   └── validation.js
+│   ├── text.js
+│   └── validators.js
 ├── .sequelizerc
 ├── app.js
 ├── server.js
@@ -423,6 +429,7 @@ API подключён с версией в URL:
 - `GET /api/v1/recipes/:id`
 - `POST /api/v1/recipes`
 - `PATCH /api/v1/recipes/:id`
+- `GET /api/v1/tags`
 
 Для `v2` пока есть отдельный каркас:
 

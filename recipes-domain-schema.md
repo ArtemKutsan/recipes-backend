@@ -96,7 +96,7 @@ erDiagram
 
 ### `tags`
 
-Таблица и Sequelize-связь с recipes через `recipe_tags` добавлены в текущем backend. `POST /api/v1/recipes` принимает строки tags, создаёт отсутствующие tags и сохраняет связи; обновление tags через PATCH пока не подключено.
+Таблица и Sequelize-связь с recipes через `recipe_tags` добавлены в текущем backend. `GET /api/v1/tags` возвращает справочник, а `POST /api/v1/recipes` принимает строки tags, создаёт отсутствующие tags и сохраняет связи; обновление tags через PATCH уже подключено.
 
 - `id` INT UNSIGNED, PK, AUTO_INCREMENT
 - `title` VARCHAR(100), NOT NULL, UNIQUE
@@ -113,7 +113,7 @@ erDiagram
 
 ### `recipe_tags`
 
-Таблица и Sequelize-связи добавлены в текущем backend; создание связей выполняется при `POST /api/v1/recipes`, а синхронизация tags при PATCH пока не подключена.
+Таблица и Sequelize-связи добавлены в текущем backend; создание связей выполняется при `POST /api/v1/recipes`, а синхронизация tags при PATCH — через `setTags`.
 
 - `recipe_id` BIGINT UNSIGNED, PK, FK, `recipes.id`, `CASCADE`
 - `tag_id` INT UNSIGNED, PK, FK, INDEX, `tags.id`, `CASCADE`
