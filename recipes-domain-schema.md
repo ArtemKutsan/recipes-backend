@@ -106,6 +106,8 @@ erDiagram
 
 ### `meal_types`
 
+Модель `MealType` и базовая таблица `meal_types` добавлены. Значения meal types являются контролируемым справочником и не создаются из пользовательских строк recipes.
+
 - `id` INT UNSIGNED, PK, AUTO_INCREMENT
 - `title` VARCHAR(100), NOT NULL, UNIQUE
 - `created_at` DATETIME, NOT NULL
@@ -121,6 +123,8 @@ erDiagram
 Примечание: составной PK `(recipe_id, tag_id)`, без собственного `id` и без timestamps.
 
 ### `recipe_meal_types`
+
+Промежуточная таблица `recipe_meal_types` и Sequelize-связи `Recipe` ↔ `MealType` пока отсутствуют в реализации.
 
 - `recipe_id` BIGINT UNSIGNED, PK, FK, `recipes.id`, `CASCADE`
 - `meal_type_id` INT UNSIGNED, PK, FK, INDEX, `meal_types.id`, `CASCADE`

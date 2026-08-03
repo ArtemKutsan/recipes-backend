@@ -124,7 +124,8 @@ import router from '#api/v1/router.js';
 │   │   ├── ...-create-cuisines.js
 │   │   ├── ...-create-recipes.js
 │   │   ├── ...-create-tags.js
-│   │   └── ...-create-recipe-tags.js
+│   │   ├── ...-create-recipe-tags.js
+│   │   └── ...-create-meal-types.js
 │   ├── models/                  # модели Sequelize
 │   │   ├── User.js
 │   │   ├── Post.js
@@ -132,6 +133,7 @@ import router from '#api/v1/router.js';
 │   │   ├── Recipe.js
 │   │   ├── Cuisine.js
 │   │   ├── Tag.js
+│   │   ├── MealType.js
 │   │   └── index.js
 │   └── seeders/                 # сиды для тестовых данных
 │       ├── ...-seed-users.js
@@ -400,7 +402,7 @@ erDiagram
 
 Текущая схема показывает уже реализованные таблицы и связи в `recipes-backend/`.
 Она включает весь фактический backend, поэтому в ней есть и `posts`, и `comments`.
-Целевая схема recipes-домена включает уже реализованные `recipes`, `cuisines`, `tags` и `recipe_tags`, а также запланированные `reviews`, `meal_types` и `recipe_meal_types`.
+Целевая схема recipes-домена включает уже реализованные `recipes`, `cuisines`, `tags`, `recipe_tags` и `meal_types`; `reviews` и `recipe_meal_types` пока отсутствуют в реализации.
 Она описана в [`recipes-domain-schema.md`](./recipes-domain-schema.md) и не относится к общему backend целиком.
 
 ## Версии API

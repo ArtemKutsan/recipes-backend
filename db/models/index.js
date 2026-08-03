@@ -4,6 +4,7 @@ import Comment from './Comment.js';
 import Recipe from './Recipe.js';
 import Cuisine from './Cuisine.js';
 import Tag from './Tag.js';
+import MealType from './MealType.js';
 
 // One-to-One
 // User.hasOne(Profile, { foreignKey: 'userId', as: 'profile' });
@@ -36,5 +37,4 @@ Tag.belongsToMany(Recipe, {
   otherKey: 'recipeId',
   as: 'recipes',
 });
-
-export { User, Post, Comment, Recipe, Cuisine, Tag };
+export { User, Post, Comment, Recipe, Cuisine, Tag, MealType };
