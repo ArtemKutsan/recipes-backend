@@ -37,4 +37,19 @@ Tag.belongsToMany(Recipe, {
   otherKey: 'recipeId',
   as: 'recipes',
 });
+Recipe.belongsToMany(MealType, {
+  through: 'recipe_meal_types',
+  timestamps: false,
+  foreignKey: 'recipeId',
+  otherKey: 'mealTypeId',
+  as: 'mealTypes',
+});
+MealType.belongsToMany(Recipe, {
+  through: 'recipe_meal_types',
+  timestamps: false,
+  foreignKey: 'mealTypeId',
+  otherKey: 'recipeId',
+  as: 'recipes',
+});
+
 export { User, Post, Comment, Recipe, Cuisine, Tag, MealType };

@@ -124,7 +124,7 @@ erDiagram
 
 ### `recipe_meal_types`
 
-Промежуточная таблица `recipe_meal_types` и Sequelize-связи `Recipe` ↔ `MealType` пока отсутствуют в реализации.
+Промежуточная таблица `recipe_meal_types` и Sequelize-связи `Recipe` ↔ `MealType` добавлены.
 
 - `recipe_id` BIGINT UNSIGNED, PK, FK, `recipes.id`, `CASCADE`
 - `meal_type_id` INT UNSIGNED, PK, FK, INDEX, `meal_types.id`, `CASCADE`
