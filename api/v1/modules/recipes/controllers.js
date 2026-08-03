@@ -84,6 +84,16 @@ export async function create(req, res) {
       // Строковые tags нормализуются, находятся или создаются сервисом.
       const tags = await findOrCreateTags(req.body.tags ?? [], { transaction });
 
+      const mealTypeIds = req.body.mealTypeIds ?? [];
+      const mealTypes = await MealType.findAll({
+        where: { id: mealTypeIds },
+        transaction,
+      });
+
+      if (mealTypes.length !== mealTypeIds.length) {
+        return { statusCode: 400, data: { error: 'Один или несколько meal types не найдены' } };
+      }
+
       // Сначала создаём сам рецепт, чтобы получить его первичный ключ.
       const recipe = await Recipe.create(
         {
@@ -99,6 +109,11 @@ export async function create(req, res) {
       if (tags.length) {
         // После появления recipe.id записываем N:M связи в recipe_tags.
         await recipe.setTags(tags, { transaction });
+      }
+
+      if (mealTypes.length) {
+        // Через setMealTypes сохраняем только выбранные значения справочника.
+        await recipe.setMealTypes(mealTypes, { transaction });
       }
 
       // Повторно читаем рецепт с автором, кухней, tags и mealTypes для единого response-контракта.
@@ -168,6 +183,20 @@ export async function update(req, res) {
         // setTags полностью заменяет набор связей; [] удаляет все tags рецепта.
         const tags = await findOrCreateTags(req.body.tags, { transaction });
         await recipe.setTags(tags, { transaction });
+      }
+
+      if (hasField(req.body, 'mealTypeIds')) {
+        const mealTypes = await MealType.findAll({
+          where: { id: req.body.mealTypeIds },
+          transaction,
+        });
+
+        if (mealTypes.length !== req.body.mealTypeIds.length) {
+          return { statusCode: 400, data: { error: 'Один или несколько meal types не найдены' } };
+        }
+
+        // setMealTypes полностью заменяет связи; [] очищает meal types рецепта.
+        await recipe.setMealTypes(mealTypes, { transaction });
       }
 
       // Сохраняем обычные поля рецепта после всех проверок.

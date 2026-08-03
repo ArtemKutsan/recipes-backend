@@ -365,12 +365,13 @@ npm run db:seed:undo:all
 
 Для рецепта используется поле `title`.
 
-В текущем флоу `POST /api/v1/recipes` принимает `title`, `ingredients`, `instructions`, опциональный `cuisineId` и массив строк `tags`.
+В текущем флоу `POST /api/v1/recipes` принимает `title`, `ingredients`, `instructions`, опциональный `cuisineId`, массив строк `tags` и массив существующих идентификаторов `mealTypeIds`.
 `instructions` нормализуется в строку с разделителем `. ` и хранится как `TEXT`.
 В ответах API response helper парсит эту строку обратно в массив.
 После создания рецепт повторно загружается с автором, кухней, tags и meal types и возвращается через тот же response helper, что и GET-запросы.
 GET-ответы recipes возвращают `tags` и `mealTypes` как массивы названий.
 `PATCH /api/v1/recipes/:id` частично обновляет рецепт только для его автора; переданный массив `tags` полностью заменяет связи, а `[]` очищает их.
+`mealTypeIds` при создании и PATCH проверяются по справочнику и полностью заменяют связи; `[]` очищает meal types.
 
 `ingredients` сохраняется в `recipes.ingredients` как текстовый список.
 

@@ -106,7 +106,7 @@ erDiagram
 
 ### `meal_types`
 
-Модель `MealType`, базовая таблица `meal_types`, seed-данные справочника и чтение meal types в Recipes API добавлены. Значения meal types являются контролируемым справочником и не создаются из пользовательских строк recipes.
+Модель `MealType`, базовая таблица `meal_types`, seed-данные справочника, чтение и запись meal types в Recipes API добавлены. Recipes API принимает существующие идентификаторы через `mealTypeIds`; новые значения справочника из пользовательского запроса не создаются.
 
 - `id` INT UNSIGNED, PK, AUTO_INCREMENT
 - `title` VARCHAR(100), NOT NULL, UNIQUE

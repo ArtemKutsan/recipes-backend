@@ -5,6 +5,7 @@ import {
   hasOnlyAllowedFields,
   hasRequiredStringFields,
   isPositiveInteger,
+  isUniquePositiveIntegerArray,
   isUniqueNonEmptyStringArray,
 } from '#utils/validators.js';
 
@@ -21,12 +22,28 @@ export function validateCreateRecipe(req, res, next) {
     return res.status(400).json({ error: 'tags должен быть массивом уникальных непустых строк' });
   }
 
+  if (
+    hasField(req.body, 'mealTypeIds')
+    && !isUniquePositiveIntegerArray(req.body.mealTypeIds)
+  ) {
+    return res.status(400).json({
+      error: 'mealTypeIds должен быть массивом уникальных положительных id',
+    });
+  }
+
   return next();
 }
 
 export function validateUpdateRecipe(req, res, next) {
   // PATCH разрешает только перечисленные поля и требует хотя бы одно из них.
-  const updateFields = ['title', 'ingredients', 'instructions', 'cuisineId', 'tags'];
+  const updateFields = [
+    'title',
+    'ingredients',
+    'instructions',
+    'cuisineId',
+    'tags',
+    'mealTypeIds',
+  ];
   // Проверяем наличие изменения, отсутствие неизвестных полей и корректность значений.
   const hasUpdate = hasAtLeastOneOfFields(req.body, updateFields);
   const hasOnlyUpdateFields = hasOnlyAllowedFields(req.body, updateFields);
@@ -39,16 +56,20 @@ export function validateUpdateRecipe(req, res, next) {
     hasField(req.body, 'cuisineId') &&
     req.body.cuisineId !== null &&
     !isPositiveInteger(req.body.cuisineId);
-  const hasInvalidTags = hasField(req.body, 'tags') && !isUniqueNonEmptyStringArray(req.body.tags);
+  const hasInvalidTags =
+    hasField(req.body, 'tags') && !isUniqueNonEmptyStringArray(req.body.tags);
+  const hasInvalidMealTypeIds =
+    hasField(req.body, 'mealTypeIds') && !isUniquePositiveIntegerArray(req.body.mealTypeIds);
 
   if (
     !hasUpdate ||
     !hasOnlyUpdateFields ||
     hasInvalidStringField ||
     hasInvalidCuisineId ||
-    hasInvalidTags
+    hasInvalidTags ||
+    hasInvalidMealTypeIds
   ) {
-    // Пустой объект, неизвестные поля, неверная кухня или некорректные tags отклоняются.
+    // Пустой объект, неизвестные поля, неверная кухня, tags или mealTypeIds отклоняются.
     return res.status(400).json({
       error: 'Передайте хотя бы одно корректное поле рецепта',
     });

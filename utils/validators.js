@@ -40,12 +40,20 @@ export function isPositiveInteger(value) {
   return typeof value === 'string' && /^[1-9]\d*$/.test(value);
 }
 
-export function isUniqueNonEmptyStringArray(value) {
+export function isUniqueNonEmptyStringArray(values) {
   // Сначала убеждаемся, что все элементы — непустые строки.
-  return Array.isArray(value)
-    && value.every(isNonEmptyString)
+  return Array.isArray(values)
+    && values.every(isNonEmptyString)
     // Затем сравниваем нормализованные регистронезависимые ключи через Set.
-    && new Set(value.map((item) => item.trim().toLocaleLowerCase())).size === value.length;
+    && new Set(values.map((item) => item.trim().toLocaleLowerCase())).size === values.length;
+}
+
+export function isUniquePositiveIntegerArray(values) {
+  // Сначала убеждаемся, что передано именно массив положительных целых чисел.
+  return Array.isArray(values)
+    && values.every(isPositiveInteger)
+    // Затем приводим значения к числам и проверяем отсутствие дублей через Set.
+    && new Set(values.map(Number)).size === values.length;
 }
 
 export function validateId(req, res, next) {
