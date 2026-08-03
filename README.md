@@ -143,7 +143,9 @@ import router from '#api/v1/router.js';
 │       ├── ...-seed-cuisines.js
 │       ├── ...-seed-recipes.js
 │       ├── ...-seed-tags.js
-│       └── ...-seed-recipe-tags.js
+│       ├── ...-seed-recipe-tags.js
+│       ├── ...-seed-meal-types.js
+│       └── ...-seed-recipe-meal-types.js
 ├── api/                         # HTTP-слой приложения
 │   ├── v1/                      # основная версия API
 │   │   ├── middleware/          # middleware для v1
