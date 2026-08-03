@@ -4,6 +4,7 @@ import postsRouter from '#api/v1/routes/posts.js';
 import commentsRouter from '#api/v1/routes/comments.js';
 import recipesRouter from '#api/v1/routes/recipes.js';
 import tagsRouter from '#api/v1/routes/tags.js';
+import mealTypesRouter from '#api/v1/routes/meal-types.js';
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.use('/posts', postsRouter);
 router.use('/comments', commentsRouter);
 router.use('/recipes', recipesRouter);
 router.use('/tags', tagsRouter);
+router.use('/meal-types', mealTypesRouter);
 
 export default router;

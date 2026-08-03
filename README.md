@@ -167,6 +167,9 @@ import router from '#api/v1/router.js';
 │   │   │   │   ├── controllers.js
 │   │   │   │   ├── responses.js
 │   │   │   │   └── service.js
+│   │   │   ├── meal-types/
+│   │   │   │   ├── controllers.js
+│   │   │   │   └── responses.js
 │   │   │   └── users/
 │   │   │       ├── controllers.js
 │   │   │       ├── responses.js
@@ -176,6 +179,7 @@ import router from '#api/v1/router.js';
 │   │   │   ├── posts.js
 │   │   │   ├── recipes.js
 │   │   │   ├── tags.js
+│   │   │   ├── meal-types.js
 │   │   │   └── users.js
 │   │   └── router.js
 │   ├── v2/                      # вторая версия API
@@ -438,6 +442,7 @@ API подключён с версией в URL:
 - `POST /api/v1/recipes`
 - `PATCH /api/v1/recipes/:id`
 - `GET /api/v1/tags`
+- `GET /api/v1/meal-types`
 
 Для `v2` пока есть отдельный каркас:
 
