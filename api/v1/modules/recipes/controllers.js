@@ -1,6 +1,6 @@
 import { ValidationError } from 'sequelize';
 import sequelize from '#config/db.js';
-import { Cuisine, Recipe, Tag, User } from '#models/index.js';
+import { Cuisine, MealType, Recipe, Tag, User } from '#models/index.js';
 import { findOrCreateTags } from '../tags/service.js';
 import { hasField } from '#utils/validators.js';
 import { parseListField } from '#utils/parseListField.js';
@@ -24,10 +24,16 @@ const recipeTagsInclude = {
   attributes: ['id', 'title', 'slug'],
 };
 
+const recipeMealTypesInclude = {
+  model: MealType,
+  as: 'mealTypes',
+  attributes: ['id', 'title'],
+};
+
 export async function getAll(_req, res) {
   try {
     const recipes = await Recipe.findAll({
-      include: [recipeAuthorInclude, recipeCuisineInclude, recipeTagsInclude],
+      include: [recipeAuthorInclude, recipeCuisineInclude, recipeTagsInclude, recipeMealTypesInclude],
     });
 
     return res.json(recipes.map(toRecipeListResponse));
@@ -39,7 +45,7 @@ export async function getAll(_req, res) {
 export async function getById(req, res) {
   try {
     const recipe = await Recipe.findByPk(req.params.id, {
-      include: [recipeAuthorInclude, recipeCuisineInclude, recipeTagsInclude],
+      include: [recipeAuthorInclude, recipeCuisineInclude, recipeTagsInclude, recipeMealTypesInclude],
     });
 
     if (!recipe) {
@@ -95,9 +101,14 @@ export async function create(req, res) {
         await recipe.setTags(tags, { transaction });
       }
 
-      // Повторно читаем рецепт с автором, кухней и tags для единого response-контракта.
+      // Повторно читаем рецепт с автором, кухней, tags и mealTypes для единого response-контракта.
       const createdRecipe = await Recipe.findByPk(recipe.id, {
-        include: [recipeAuthorInclude, recipeCuisineInclude, recipeTagsInclude],
+        include: [
+          recipeAuthorInclude,
+          recipeCuisineInclude,
+          recipeTagsInclude,
+          recipeMealTypesInclude,
+        ],
         transaction,
       });
 
@@ -163,7 +174,12 @@ export async function update(req, res) {
       await recipe.save({ transaction });
       // Перечитываем связанные данные для единого detail-response.
       await recipe.reload({
-        include: [recipeAuthorInclude, recipeCuisineInclude, recipeTagsInclude],
+        include: [
+          recipeAuthorInclude,
+          recipeCuisineInclude,
+          recipeTagsInclude,
+          recipeMealTypesInclude,
+        ],
         transaction,
       });
 

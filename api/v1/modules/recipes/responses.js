@@ -9,6 +9,7 @@ function toRecipeBaseResponse(recipe) {
     cuisine: plainRecipe.cuisine?.title ?? null,
     author: plainRecipe.user?.fullname ?? null,
     tags: plainRecipe.tags?.map(({ title }) => title) ?? [],
+    mealTypes: plainRecipe.mealTypes?.map(({ title }) => title) ?? [],
     userId: plainRecipe.userId,
     createdAt: plainRecipe.createdAt,
     updatedAt: plainRecipe.updatedAt,
